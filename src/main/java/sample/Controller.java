@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -17,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static sample.ProConstanse.STORE_FOLDER;
+import static sample.ProConstants.STORE_FOLDER;
 
 public class Controller implements Initializable {
 
@@ -32,10 +31,6 @@ public class Controller implements Initializable {
   public Button btn5;
   public Button btn6;
 
-  private final static String ZIPA = "zipalign -v -p 4 c:/users/artk5/documents/testapplication/app/build/outputs/apk/release/app-release-unsigned.apk c:/app/app-release-unsigned-aligned.apk";
-  private final static String PATH_TO_ZIPA = "C:\\Users\\nika-\\AppData\\Local\\Android\\Sdk\\build-tools\\27.0.3\\";
-
-
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     loadKeyStores();
@@ -48,12 +43,6 @@ public class Controller implements Initializable {
 
       Commands.getAliasList(t1, masterPass.getText())
               .doOnSuccess(strings -> keyList.getItems().addAll(strings))
-              .subscribe();
-
-      Commands.getSHAList(t1, masterPass.getText())
-              .doOnSuccess(strings -> {
-                strings.toString();//todo
-              })
               .subscribe();
     }));
   }
@@ -77,8 +66,6 @@ public class Controller implements Initializable {
 
   public void genKey(ActionEvent actionEvent) {
     Commands.addKeyStore("123456", "simpleName", "key0", "Max Boyar", "Moscow", "RU");
-//        System.out.println("genKey");
-//        testCmd();
   }
 
 
