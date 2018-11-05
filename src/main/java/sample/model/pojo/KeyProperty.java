@@ -1,63 +1,64 @@
 package sample.model.pojo;
 
 public class KeyProperty {
-  private String keyStoreName;
-  private String keyName;
-  private String password;
-  private String firstAndLastName;
-  private String city;
-  private String countryCode;
 
-  public String getKeyStoreName() {
-    return keyStoreName;
-  }
+    private String keyStoreName;
+    private String keyName;
+    private String password;
+    private String firstAndLastName;
+    private String city;
+    private String countryCode;
 
-  public void setKeyStoreName(String keyStoreName) {
-    this.keyStoreName = keyStoreName;
-  }
+    public String getKeyStoreName() {
+        return keyStoreName;
+    }
 
-  public String getKeyName() {
-    return keyName;
-  }
+    public void setKeyStoreName(String keyStoreName) {
+        this.keyStoreName = keyStoreName;
+    }
 
-  public void setKeyName(String keyName) {
-    this.keyName = keyName;
-  }
+    public String getAliasName() {
+        return keyName;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public void setKeyName(String keyName) {
+        this.keyName = keyName;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getPassword() {
+        return password;
+    }
 
-  public String getFirstAndLastName() {
-    return firstAndLastName;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setFirstAndLastName(String firstAndLastName) {
-    this.firstAndLastName = firstAndLastName;
-  }
+    public String getFirstAndLastName() {
+        return firstAndLastName;
+    }
 
-  public String getCity() {
-    return city;
-  }
+    public void setFirstAndLastName(String firstAndLastName) {
+        this.firstAndLastName = firstAndLastName;
+    }
 
-  public void setCity(String city) {
-    this.city = city;
-  }
+    public String getCity() {
+        return city;
+    }
 
-  public String getCountryCode() {
-    return countryCode;
-  }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-  public void setCountryCode(String countryCode) {
-    this.countryCode = countryCode;
-  }
+    public String getCountryCode() {
+        return countryCode;
+    }
 
-  @Override
-  public String toString() {
-    return keyStoreName;
-  }
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    @Override
+    public String toString() {
+        return keyStoreName;
+    }
 }

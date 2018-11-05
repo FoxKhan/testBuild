@@ -75,7 +75,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <PasswordField fx:id="masterPass" />
+            <PasswordField fx:id="masterPass" onKeyPressed="#onPasswordEnter" />
          </children>
       </HBox>
       <BorderPane prefHeight="643.0" prefWidth="800.0">
@@ -84,7 +84,7 @@
                <children>
                <HBox prefHeight="23.0" prefWidth="251.0">
                   <children>
-                     <Button mnemonicParsing="false" onAction="#addKey" text="Add" />
+                     <Button mnemonicParsing="false" onAction="#addKeyStore" text="Add" />
                      <Button mnemonicParsing="false" onAction="#getSHA" text="get SHA - 1" />
                   </children>
                </HBox>

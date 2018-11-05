@@ -1,6 +1,8 @@
-package sample;
+package sample.utils;
 
 import io.reactivex.Single;
+import sample.ProConstants;
+import sample.exceptions.NotValidPasswordException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,11 +13,17 @@ import static sample.ProConstants.STORE_FOLDER;
 
 public class Commands {
 
-    static void addKeyStore(String password, String keyStoreName, String aliasName, String firstLastName, String city, String countryCode) {
+    public static void addKeyStore(
+            String password,
+            String keyStoreName,
+            String aliasName,
+            String firstLastName,
+            String city,
+            String countryCode) {
 
         File keyStoreFolder = new File("keyStores");
         if (!keyStoreFolder.isDirectory()) {
-            keyStoreFolder.mkdir();
+            if (!keyStoreFolder.mkdir()) return;
         }
 
         String command = "keytool -genkeypair -keystore " + ProConstants.PATH_TO_PRO + "/" + STORE_FOLDER + keyStoreName + ".jks"
@@ -34,35 +42,32 @@ public class Commands {
         cmd(command).subscribe();
     }
 
-    static Single<ArrayList<String>> getAliasList(String jks, String password) {
+    public static Single<ArrayList<String>> getAliasList(String jks, String password) {
 
         String command = "keytool -keystore "
                 + STORE_FOLDER + jks
                 + " -storepass " + password
                 + " -list";
 
-
         return cmd(command)
                 .map(s -> {
-
                     String[] out = s.split("\n");
                     ArrayList<String> result = new ArrayList<>();
                     for (String line : out) {
                         if (line.contains("PrivateKeyEntry")) {
                             result.add(line.split(",")[0]);
-                        }
+                        } else isValidPassword(line);
                     }
                     return result;
                 });
     }
 
-    static Single<ArrayList<String>> getSHAList(String jks, String password) {
+    public static Single<ArrayList<String>> getSHAList(String jks, String password) {
 
         String command = "keytool -keystore "
                 + STORE_FOLDER + jks
                 + " -storepass " + password
                 + " -list";
-
 
         return cmd(command)
                 .map(s -> {
@@ -74,12 +79,18 @@ public class Commands {
                         } else if (line.contains("SHA1")) {
                             result.add(line.substring(line.indexOf(":") + 2));
                             result.add("");
-                        }
+                        } else isValidPassword(line);
                     }
                     return result;
                 });
     }
 
+
+    private static void isValidPassword(String line) throws NotValidPasswordException {
+        if (line.contains("Usage error") || line.contains("password was incorrect")) {
+            throw new NotValidPasswordException();
+        }
+    }
 
     private static Single<String> cmd(String inCommand) {
         return Single.fromCallable(() -> {
