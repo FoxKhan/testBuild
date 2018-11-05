@@ -1,6 +1,6 @@
 package sample;
 
-import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -78,4 +78,41 @@ public class Controller implements Initializable {
     public void genAlias(ActionEvent actionEvent) {
         Commands.addKeyStore("123456", "simpleName","key1", "Max Boyar", "Moscow", "RU");
     }
+
+  public void addKey() {
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(new File("src/main/resources/add_key.fxml").toURI().toURL());
+      HBox page = loader.load();
+
+      Stage dialogStage = new Stage();
+      dialogStage.setTitle("Editor");
+      dialogStage.initModality(Modality.WINDOW_MODAL);
+      dialogStage.initOwner(null);
+      Scene scene = new Scene(page);
+      dialogStage.setScene(scene);
+
+
+      KeyProperty keyProperty = new KeyProperty();
+      FieldController controller = loader.getController();
+      controller.setKeyProperty(keyProperty);
+      dialogStage.showAndWait();
+      keyStoreList.getItems().add(keyProperty);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void getSHA(ActionEvent actionEvent) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("SHA - 1");
+    VBox dialogPaneContent = new VBox();
+    TextArea textArea = new TextArea();
+    textArea.setText("ТУТ ТВОЙ КОД");
+
+    dialogPaneContent.getChildren().addAll(textArea);
+    alert.getDialogPane().setContent(dialogPaneContent);
+
+    alert.showAndWait();
+  }
 }

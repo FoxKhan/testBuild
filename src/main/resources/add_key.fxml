@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.FieldController">
+    <VBox>
+        <Label text="key store name">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="key name">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="password">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="first and last name">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="city">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="country code">
+            <VBox.margin>
+                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+            </VBox.margin>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#okClick" text="OK" />
+    </VBox>
+    <VBox>
+        <TextField fx:id="keyStoreName" alignment="TOP_LEFT" />
+        <TextField fx:id="keyName" />
+        <TextField fx:id="password" />
+        <TextField fx:id="firstAndLastName" />
+        <TextField fx:id="city" />
+        <TextField fx:id="countryCode" />
+    </VBox>
+</HBox>
