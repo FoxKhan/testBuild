@@ -17,7 +17,6 @@
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-  <children>
       <ButtonBar buttonMinWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="800.0">
          <buttons>
             <Button fx:id="btn1" minWidth="67.0" mnemonicParsing="false" onAction="#genKey" prefHeight="25.0" prefWidth="146.0" text="genKey" />
