@@ -19,6 +19,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println("djkdjskd");
         Parent root = FXMLLoader.load(new File("src/main/resources/ttt.fxml").toURI().toURL());
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
