@@ -19,26 +19,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println("djkdjskd");
         Parent root = FXMLLoader.load(new File("src/main/resources/ttt.fxml").toURI().toURL());
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-        Label label = (Label) root.lookup("#label");
-
-        ((Button) root.lookup("#btn1")).setOnAction(actionEvent -> label.setText("hello...."));
-        ((Button) root.lookup("#btn2")).setOnAction(actionEvent -> label.setText(".... world"));
-        ((Button) root.lookup("#btn3")).setOnAction(actionEvent -> cmd().doOnComplete(() -> System.out.println("end command"))
-                .subscribe());
+        cmd().subscribe();
+      System.out.println(System.getProperty("user.dir"));
     }
 
 
     private Completable cmd() {
         return Completable.fromCallable((Callable<Void>) () -> {
-
-            System.out.println("start command");
-
             ProcessBuilder builder = new ProcessBuilder(
                     "cmd.exe", "/c", PATH_TO_ZIPA + ZIPA);
             builder.redirectErrorStream(true);
