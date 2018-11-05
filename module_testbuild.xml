@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_testbuild" default="compile.module.testbuild">
+  <dirname property="module.testbuild.basedir" file="${ant.file.module_testbuild}"/>
+  
+  <property name="module.jdk.home.testbuild" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.testbuild" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.testbuild" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.testbuild" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="testbuild.output.dir" value="${module.testbuild.basedir}/out/production/testBuild"/>
+  <property name="testbuild.testoutput.dir" value="${module.testbuild.basedir}/out/test/testBuild"/>
+  
+  <path id="testbuild.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="testbuild.module.production.classpath">
+    <path refid="${module.jdk.classpath.testbuild}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="testbuild.runtime.production.module.classpath">
+    <pathelement location="${testbuild.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="testbuild.module.classpath">
+    <path refid="${module.jdk.classpath.testbuild}"/>
+    <pathelement location="${testbuild.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="testbuild.runtime.module.classpath">
+    <pathelement location="${testbuild.testoutput.dir}"/>
+    <pathelement location="${testbuild.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.testbuild">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.testbuild">
+    <patternset refid="excluded.from.module.testbuild"/>
+  </patternset>
+  
+  <path id="testbuild.module.sourcepath">
+    <dirset dir="${module.testbuild.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.testbuild" depends="compile.module.testbuild.production,compile.module.testbuild.tests" description="Compile module testBuild"/>
+  
+  <target name="compile.module.testbuild.production" depends="register.custom.compilers" description="Compile module testBuild; production classes">
+    <mkdir dir="${testbuild.output.dir}"/>
+    <javac2 destdir="${testbuild.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.testbuild}/javac">
+      <compilerarg line="${compiler.args.testbuild}"/>
+      <bootclasspath refid="testbuild.module.bootclasspath"/>
+      <classpath refid="testbuild.module.production.classpath"/>
+      <src refid="testbuild.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.testbuild"/>
+    </javac2>
+    
+    <copy todir="${testbuild.output.dir}">
+      <fileset dir="${module.testbuild.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.testbuild.tests" depends="register.custom.compilers,compile.module.testbuild.production" description="compile module testBuild; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.testbuild" description="cleanup module">
+    <delete dir="${testbuild.output.dir}"/>
+    <delete dir="${testbuild.testoutput.dir}"/>
+  </target>
+</project>
