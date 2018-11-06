@@ -9,18 +9,19 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
+import jdk.jshell.spi.ExecutionControl;
 import sample.exceptions.NotValidPasswordException;
+import sample.model.Paths;
 import sample.model.pojo.KeyProperty;
 import sample.utils.Commands;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import static sample.ProConstants.KEY_KEYTOOL;
 import static sample.ProConstants.STORE_FOLDER;
 
 public class Controller implements Initializable {
@@ -39,13 +40,14 @@ public class Controller implements Initializable {
 
     private String currentKeyStore;
     private KeyProperty currentAlias;
+    private Paths paths;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadKeyStores();
         initListKeyStore();
+        checkPaths();
     }
-
 
     public void genKeyTest(ActionEvent actionEvent) {
         Commands.addKeyStoreOrAlias("123456", "simpleName", "key0", "Max Boyar", "Moscow", "RU");
@@ -148,6 +150,7 @@ public class Controller implements Initializable {
         );
 
         getAliasList(currentKeyStore);
+        aliasList.getSelectionModel().selectFirst();
     }
 
 
@@ -228,5 +231,107 @@ public class Controller implements Initializable {
         alert.setContentText("Pls enter valid alias name");
 
         alert.showAndWait();
+    }
+
+    public void onBuildClick(ActionEvent actionEvent) {
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(((Node) actionEvent.getTarget()).getScene().getWindow());
+
+        if (selectedDirectory != null) {
+            System.out.println(selectedDirectory.getAbsolutePath());
+
+            HashMap<String, String> pathPreferences = new HashMap<>();
+            pathPreferences.put(KEY_KEYTOOL, selectedDirectory.getAbsolutePath());
+
+            String path = pathPreferences.get(KEY_KEYTOOL);
+
+
+        }
+    }
+
+    private void checkPaths() {
+
+        File file = new File("paths.fox");
+        if (file.exists()) {
+
+            FileInputStream fin = null;
+            ObjectInputStream oin = null;
+
+            try {
+                fin = new FileInputStream(file);
+                oin = new ObjectInputStream(fin);
+                paths = (Paths) oin.readObject();
+                Commands.checkPaths(paths)
+                        .doOnSuccess(this::setPathsColors)
+                        .subscribe();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (paths == null) paths = new Paths();
+            } finally {
+                if (fin != null) {
+                    try {
+                        fin.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (oin != null) {
+                    try {
+                        oin.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private void setPathsColors(Boolean[] booleans) {
+        //todo
+    }
+
+    public void onKeytoolChooserClick(ActionEvent actionEvent) {
+        String path = showFileChooser(actionEvent);
+        if (!path.isEmpty()){
+            paths.setKeytoolPath(path);
+        }
+    }
+
+    public void onGradlewChooserClick(ActionEvent actionEvent) {
+        String path = showFileChooser(actionEvent);
+        if (!path.isEmpty()){
+            paths.setGradlew(path);
+        }
+    }
+
+    public void onApkSignerChooserClick(ActionEvent actionEvent) {
+        String path = showFileChooser(actionEvent);
+        if (!path.isEmpty()){
+            paths.setApksigner(path);
+        }
+    }
+
+    public void onZipailignChooserClick(ActionEvent actionEvent) {
+        String path = showFileChooser(actionEvent);
+        if (!path.isEmpty()){
+
+            Commands.checkPath(path);
+            paths.setZipalign(path);
+        }
+
+    }
+
+    private String showFileChooser(ActionEvent actionEvent) {
+
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(((Node) actionEvent.getTarget()).getScene().getWindow());
+
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        }
+
+        return "";
     }
 }

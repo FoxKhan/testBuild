@@ -1,7 +1,9 @@
 package sample.utils;
 
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 import sample.exceptions.NotValidPasswordException;
+import sample.model.Paths;
 import sample.model.pojo.KeyProperty;
 
 import java.io.BufferedReader;
@@ -17,7 +19,7 @@ public class Commands {
     public static Single<KeyProperty> getKeyStoreProperties(String keyStoreName, String aliasName, String password) {
 
         String command = "keytool -v " +
-                " -keystore " + PATH_TO_PRO  + "/" + STORE_FOLDER + keyStoreName +
+                " -keystore " + PATH_TO_PRO + "/" + STORE_FOLDER + keyStoreName +
                 " -storepass " + password +
                 " -list -alias " + aliasName;
 
@@ -44,7 +46,7 @@ public class Commands {
                             String countryCode = properties[5];
                             keyProperty.setCountryCode(countryCode.split("=")[1]);
 
-                           break;
+                            break;
                         }
                     }
                     return keyProperty;
@@ -164,5 +166,25 @@ public class Commands {
             System.out.println("end command");
             return output.toString();
         });
+    }
+
+    public static Single<Boolean[]> checkPaths(Paths paths) {
+
+        return null;
+    }
+
+    public static Single<Boolean> checkPath(String path) {
+        return cmd(path)
+                .map(s -> {
+                    String[] lines = s.split("\n");
+                    boolean b = true;
+                    for (String line: lines){
+                        if (line.contains("ObjectNotFound")){
+                            b = false;
+                            break;
+                        }
+                    }
+                    return b;
+                });
     }
 }
