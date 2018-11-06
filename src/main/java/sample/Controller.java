@@ -25,10 +25,11 @@ import static sample.ProConstants.STORE_FOLDER;
 
 public class Controller implements Initializable {
 
-    public ListView<String> keyStoreList;
-    public ListView<String> keyList;
-    public ListView aboutList;
+    public ListView<String> storeList;
+    public ListView<String> aliasList;
+    public ListView<String> aboutList;
     public PasswordField masterPass;
+    public TextField newAliasNameTV;
     public Button btn1;
     public Button btn2;
     public Button btn3;
@@ -37,6 +38,7 @@ public class Controller implements Initializable {
     public Button btn6;
 
     private String currentKeyStore;
+    private KeyProperty currentAlias;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -44,61 +46,16 @@ public class Controller implements Initializable {
         initListKeyStore();
     }
 
-    private void initListKeyStore() {
 
-        keyStoreList.getSelectionModel().selectedItemProperty().addListener(((observableValue, s, t1) -> getAliasList(t1)));
-
+    public void genKeyTest(ActionEvent actionEvent) {
+        Commands.addKeyStoreOrAlias("123456", "simpleName", "key0", "Max Boyar", "Moscow", "RU");
     }
 
-    private void getAliasList(String t1) {
-        Commands.getAliasList(t1, masterPass.getText())
-                .doOnSuccess(strings -> keyList.getItems().addAll(strings))
-                .doOnError(throwable -> {
-                    if (throwable instanceof NotValidPasswordException) {
-                        showAlertNotValidPassword();
-                    }
-                })
-                .doFinally(() -> currentKeyStore = t1)
-                .subscribe();
+    public void genAliasTest(ActionEvent actionEvent) {
+        Commands.addKeyStoreOrAlias("123456", "simpleName", "key1", "Max Boyar", "Moscow", "RU");
     }
 
-    private void showAlertNotValidPassword() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
-        alert.setTitle("Error alert");
-        alert.setHeaderText("Not valid password");
-        alert.setContentText("Pls enter the password in master pas view and press ENTER button");
-
-        alert.showAndWait();
-    }
-
-    private void loadKeyStores() {
-
-        File keyStoresFolder = new File(STORE_FOLDER);
-        if (!keyStoresFolder.isDirectory()) return;
-
-        File[] keyStores = keyStoresFolder.listFiles();
-
-        keyStoreList.getItems().clear();
-
-        if (keyStores != null) {
-            for (File keyStore : keyStores) {
-                keyStoreList.getItems().add(keyStore.getName());
-            }
-        }
-    }
-
-
-    public void genKey(ActionEvent actionEvent) {
-        Commands.addKeyStore("123456", "simpleName", "key0", "Max Boyar", "Moscow", "RU");
-    }
-
-
-    public void genAlias(ActionEvent actionEvent) {
-        Commands.addKeyStore("123456", "simpleName", "key1", "Max Boyar", "Moscow", "RU");
-    }
-
-    public void addKeyStore(ActionEvent actionEvent) {
+    public void addKeyStoreClick(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(new File("src/main/resources/add_key.fxml").toURI().toURL());
@@ -119,8 +76,8 @@ public class Controller implements Initializable {
             controller.setKeyProperty(keyProperty);
             dialogStage.showAndWait();
 
-            if (keyProperty.getKeyStoreName() != null){
-                Commands.addKeyStore(
+            if (keyProperty.getKeyStoreName() != null) {
+                Commands.addKeyStoreOrAlias(
                         keyProperty.getPassword(),
                         keyProperty.getKeyStoreName(),
                         keyProperty.getAliasName(),
@@ -128,13 +85,14 @@ public class Controller implements Initializable {
                         keyProperty.getCity(),
                         keyProperty.getCountryCode()
                 );
+                loadKeyStores();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void getSHA(ActionEvent actionEvent) {
+    public void getSHAClick(ActionEvent actionEvent) {
 
         if (currentKeyStore == null) return;
 
@@ -168,5 +126,107 @@ public class Controller implements Initializable {
         if (currentKeyStore != null && keyEvent.getCode().equals(KeyCode.ENTER)) {
             getAliasList(currentKeyStore);
         }
+    }
+
+    public void copyAliasClick(ActionEvent actionEvent) {
+
+        if (currentAlias == null) return;
+
+        String aliasName = newAliasNameTV.getText().trim();
+        if (aliasName.isEmpty() || aliasName.length() < 3 || aliasName.contains(" ")) {
+            showAlertEmptyAliasName();
+            return;
+        }
+
+        Commands.addKeyStoreOrAlias(
+                currentAlias.getPassword(),
+                currentAlias.getKeyStoreName().substring(0, currentAlias.getKeyStoreName().length() - 4),
+                aliasName,
+                currentAlias.getFirstAndLastName(),
+                currentAlias.getCity(),
+                currentAlias.getCountryCode()
+        );
+
+        getAliasList(currentKeyStore);
+    }
+
+
+    private void initListKeyStore() {
+
+        storeList.getSelectionModel().selectedItemProperty().addListener(((observableValue, s, t1) -> getAliasList(t1)));
+
+        aliasList.getSelectionModel().selectedItemProperty().addListener(((observableValue, s, t1) -> getAliasProperties(t1)));
+
+    }
+
+    private void getAliasProperties(String aliasName) {
+
+        if (currentKeyStore == null || masterPass.getText().isEmpty()) return;
+
+        Commands.getKeyStoreProperties(currentKeyStore, aliasName, masterPass.getText())
+                .doOnSuccess(keyProperty -> {
+
+                    currentAlias = keyProperty;
+
+                    aboutList.getItems().clear();
+
+                    if (keyProperty.getKeyStoreName() != null) {
+                        aboutList.getItems().add("Store:  " + keyProperty.getKeyStoreName());
+                        aboutList.getItems().add("Alias:  " + keyProperty.getAliasName());
+                        aboutList.getItems().add("Owner:  " + keyProperty.getFirstAndLastName());
+                        aboutList.getItems().add("City:  " + keyProperty.getCity());
+                        aboutList.getItems().add("Country code:  " + keyProperty.getCountryCode());
+                    }
+                })
+                .subscribe();
+    }
+
+    private void getAliasList(String t1) {
+        Commands.getAliasList(t1, masterPass.getText())
+                .doOnSuccess(strings -> {
+                    aliasList.getItems().clear();
+                    aliasList.getItems().addAll(strings);
+                })
+                .doOnError(throwable -> {
+                    if (throwable instanceof NotValidPasswordException) {
+                        showAlertNotValidPassword();
+                    }
+                })
+                .doFinally(() -> currentKeyStore = t1)
+                .subscribe();
+    }
+
+    private void showAlertNotValidPassword() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText("Not valid password");
+        alert.setContentText("Pls enter the password in master pas view and press ENTER button");
+
+        alert.showAndWait();
+    }
+
+    private void loadKeyStores() {
+
+        File keyStoresFolder = new File(STORE_FOLDER);
+        if (!keyStoresFolder.isDirectory()) return;
+
+        File[] keyStores = keyStoresFolder.listFiles();
+
+        storeList.getItems().clear();
+
+        if (keyStores != null) {
+            for (File keyStore : keyStores) {
+                storeList.getItems().add(keyStore.getName());
+            }
+        }
+    }
+
+    private void showAlertEmptyAliasName() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText("Not valid alias name");
+        alert.setContentText("Pls enter valid alias name");
+
+        alert.showAndWait();
     }
 }

@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,8 +19,8 @@
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
       <ButtonBar buttonMinWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="800.0">
          <buttons>
-            <Button fx:id="btn1" minWidth="67.0" mnemonicParsing="false" onAction="#genKey" prefHeight="25.0" prefWidth="146.0" text="genKey" />
-            <Button fx:id="btn2" mnemonicParsing="false" onAction="#genAlias" text="Button" />
+            <Button fx:id="btn1" minWidth="67.0" mnemonicParsing="false" onAction="#genKeyTest" prefHeight="25.0" prefWidth="146.0" text="genKey" />
+            <Button fx:id="btn2" mnemonicParsing="false" onAction="#genAliasTest" text="Button" />
             <Button fx:id="btn3" mnemonicParsing="false" text="Button" />
             <Button fx:id="btn4" mnemonicParsing="false" text="Button" />
             <Button fx:id="btn5" mnemonicParsing="false" text="Button" />
@@ -84,11 +85,11 @@
                <children>
                <HBox prefHeight="23.0" prefWidth="251.0">
                   <children>
-                     <Button mnemonicParsing="false" onAction="#addKeyStore" text="Add" />
-                     <Button mnemonicParsing="false" onAction="#getSHA" text="get SHA - 1" />
+                     <Button mnemonicParsing="false" onAction="#addKeyStoreClick" text="Add" />
+                     <Button mnemonicParsing="false" onAction="#getSHAClick" text="get SHA - 1" />
                   </children>
                </HBox>
-                  <ListView fx:id="keyStoreList" prefHeight="570.0" prefWidth="251.0" style="-fx-background-color: #fff;" />
+                  <ListView fx:id="storeList" prefHeight="570.0" prefWidth="251.0" style="-fx-background-color: #fff;" />
                </children>
             </VBox>
          </left>
@@ -97,7 +98,13 @@
                <children>
                   <VBox prefHeight="550.0" prefWidth="310.0" style="-fx-background-color: #ddd;">
                       <children>
-                          <ListView fx:id="keyList" prefHeight="578.0" prefWidth="305.0" style="-fx-background-color: #ddd;" />
+                     <HBox prefHeight="22.0" prefWidth="305.0">
+                        <children>
+                           <TextField fx:id="newAliasNameTV" prefHeight="25.0" prefWidth="96.0" promptText="new alias name" />
+                           <Button mnemonicParsing="false" onAction="#copyAliasClick" text="copy" />
+                        </children>
+                     </HBox>
+                          <ListView fx:id="aliasList" prefHeight="578.0" prefWidth="305.0" style="-fx-background-color: #ddd;" />
                       </children>
                   </VBox>
               </children>

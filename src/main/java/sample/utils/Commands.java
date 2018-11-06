@@ -1,19 +1,59 @@
 package sample.utils;
 
 import io.reactivex.Single;
-import sample.ProConstants;
 import sample.exceptions.NotValidPasswordException;
+import sample.model.pojo.KeyProperty;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import static sample.ProConstants.PATH_TO_PRO;
 import static sample.ProConstants.STORE_FOLDER;
 
 public class Commands {
 
-    public static void addKeyStore(
+    public static Single<KeyProperty> getKeyStoreProperties(String keyStoreName, String aliasName, String password) {
+
+        String command = "keytool -v " +
+                " -keystore " + PATH_TO_PRO  + "/" + STORE_FOLDER + keyStoreName +
+                " -storepass " + password +
+                " -list -alias " + aliasName;
+
+        return cmd(command)
+                .map(s -> {
+                    String[] lines = s.split("\n");
+                    KeyProperty keyProperty = new KeyProperty();
+
+                    for (String line : lines) {
+                        if (line.contains("Owner")) {
+
+                            keyProperty.setKeyStoreName(keyStoreName);
+                            keyProperty.setKeyName(aliasName);
+                            keyProperty.setPassword(password);
+
+                            String[] properties = line.split(",");
+
+                            String firstLastName = properties[0];
+                            keyProperty.setFirstAndLastName(firstLastName.split("=")[1]);
+
+                            String city = properties[4];
+                            keyProperty.setCity(city.split("=")[1]);
+
+                            String countryCode = properties[5];
+                            keyProperty.setCountryCode(countryCode.split("=")[1]);
+
+                           break;
+                        }
+                    }
+                    return keyProperty;
+                });
+
+
+    }
+
+    public static void addKeyStoreOrAlias(
             String password,
             String keyStoreName,
             String aliasName,
@@ -26,10 +66,12 @@ public class Commands {
             if (!keyStoreFolder.mkdir()) return;
         }
 
-        String command = "keytool -genkeypair -keystore " + ProConstants.PATH_TO_PRO + "/" + STORE_FOLDER + keyStoreName + ".jks"
+        String command = "keytool -genkeypair -keystore " + PATH_TO_PRO + "/" + STORE_FOLDER + keyStoreName + ".jks"
+                + " -validity 10000 -keyalg RSA -keysize 2048"
                 + " -alias " + aliasName
                 + " -storepass " + password
                 + " -keypass " + password
+
                 + " -dname \""
                 + "CN=" + firstLastName
                 + ", OU=" + ""
