@@ -37,14 +37,24 @@ public class Commands {
 
                             String[] properties = line.split(",");
 
-                            String firstLastName = properties[0];
-                            keyProperty.setFirstAndLastName(firstLastName.split("=")[1]);
+                            for (String prop : properties) {
+                                if (prop.contains("CN=")) {
+                                    keyProperty.setFirstAndLastName(prop.split("=")[1]);
+                                } else if (prop.contains("L=")) {
+                                    keyProperty.setCity(prop.split("=")[1]);
+                                } else if (prop.contains("C=")) {
+                                    keyProperty.setCountryCode(prop.split("=")[1]);
+                                }
+                            }
 
-                            String city = properties[4];
-                            keyProperty.setCity(city.split("=")[1]);
-
-                            String countryCode = properties[5];
-                            keyProperty.setCountryCode(countryCode.split("=")[1]);
+//                            String firstLastName = properties[0];
+//                            keyProperty.setFirstAndLastName(firstLastName.split("=")[1]);
+//
+//                            String city = properties[4];
+//                            keyProperty.setCity(city.split("=")[1]);
+//
+//                            String countryCode = properties[5];
+//                            keyProperty.setCountryCode(countryCode.split("=")[1]);
 
                             break;
                         }
@@ -76,10 +86,7 @@ public class Commands {
 
                 + " -dname \""
                 + "CN=" + firstLastName
-                + ", OU=" + ""
-                + ", O=" + ""
-                + ", L=" + ""
-                + ", S=" + city
+                + ", L=" + city
                 + ", C=" + countryCode
                 + "\"";
 
@@ -178,8 +185,8 @@ public class Commands {
                 .map(s -> {
                     String[] lines = s.split("\n");
                     boolean b = true;
-                    for (String line: lines){
-                        if (line.contains("ObjectNotFound")){
+                    for (String line : lines) {
+                        if (line.contains("ObjectNotFound")) {
                             b = false;
                             break;
                         }
