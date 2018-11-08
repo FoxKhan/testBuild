@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import static sample.ProConstants.PATH_TO_PRO;
-import static sample.ProConstants.STORE_FOLDER;
+import static sample.ProConstants.*;
+import static sample.ProConstants.COLOR_RED;
+import static sample.ProConstants.C_BACKGROUND_COLOR;
 
 public class Commands {
 
@@ -159,7 +160,7 @@ public class Commands {
 
             String[] stringsCommands = commands.toArray(new String[0]);
 
-            System.out.println("jj");
+            System.out.println(inCommand);
             ProcessBuilder builder = new ProcessBuilder(stringsCommands);
             builder.redirectErrorStream(true);
             Process p = builder.start();
@@ -177,23 +178,5 @@ public class Commands {
             System.out.println("end command");
             return output.toString();
         });
-    }
-
-    public static Single<Boolean> checkPath(String path) {
-
-        String notFound = "CommandNotFoundException";
-
-        return cmd(path)
-                .map(s -> {
-                    String[] lines = s.split("\n");
-                    boolean b = true;
-                    for (String line : lines) {
-                        if (line.contains(notFound)) {
-                            b = false;
-                            break;
-                        }
-                    }
-                    return b;
-                });
     }
 }

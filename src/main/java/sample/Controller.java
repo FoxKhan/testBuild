@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import sample.exceptions.NotValidPasswordException;
+import sample.model.FileController;
 import sample.model.Paths;
 import sample.model.pojo.KeyProperty;
 import sample.utils.Commands;
@@ -251,108 +252,91 @@ public class Controller implements Initializable {
             String path = pathPreferences.get(KEY_KEYTOOL);
 
 
+            //TODO
         }
     }
 
     private void checkPaths() {
 
         File file = new File("paths.fox");
-        if (file.exists()) {
 
-            FileInputStream fin = null;
-            ObjectInputStream oin = null;
-
-            try {
-                fin = new FileInputStream(file);
-                oin = new ObjectInputStream(fin);
-                paths = (Paths) oin.readObject();
-
-                Commands.checkPath(paths.getKeytool())
-                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_KEYTOOL))
-                        .subscribe();
-
-                Commands.checkPath(paths.getZipalign())
-                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_ZIPALIGN))
-                        .subscribe();
-
-                Commands.checkPath(paths.getGradlew())
-                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_GRADLEW))
-                        .subscribe();
-
-                Commands.checkPath(paths.getApksigner())
-                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_APKSIGNER))
-                        .subscribe();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (paths == null) paths = new Paths();
-            } finally {
-                if (fin != null) {
-                    try {
-                        fin.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (oin != null) {
-                    try {
-                        oin.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        paths = FileController.open(file);
+        if (paths == null) {
+            paths = new Paths();
+            paths.setKeytool("C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe");
+            paths.setGradlew("");
+            paths.setZipalign("");
+            paths.setApksigner("");
         }
+
+        if (paths.getKeytool().contains(KEY_KEYTOOL)) setPathColor(true, KEY_KEYTOOL);
+        else setPathColor(false, KEY_KEYTOOL);
+
+        if (paths.getZipalign().contains(KEY_ZIPALIGN)) setPathColor(true, KEY_ZIPALIGN);
+        else setPathColor(false, KEY_ZIPALIGN);
+
+        if (paths.getApksigner().contains(KEY_APKSIGNER)) setPathColor(true, KEY_APKSIGNER);
+        else setPathColor(false, KEY_APKSIGNER);
+
+        if (paths.getGradlew().contains(KEY_GRADLEW)) setPathColor(true, KEY_GRADLEW);
+        else setPathColor(false, KEY_GRADLEW);
     }
 
     private void setPathColor(boolean isGreen, String id) {
-        switch (id){
+        switch (id) {
             case KEY_KEYTOOL:
-                if (isGreen) pathColorKeytool.setStyle("-fx-background-color: " + COLOR_GREEN);
-                else pathColorKeytool.setStyle("-fx-background-color: " + COLOR_RED);
+                if (isGreen) pathColorKeytool.setStyle(C_BACKGROUND_COLOR + COLOR_GREEN);
+                else pathColorKeytool.setStyle(C_BACKGROUND_COLOR + COLOR_RED);
                 break;
             case KEY_ZIPALIGN:
-                if (isGreen) pathColorZipalign.setStyle("-fx-background-color: " + COLOR_GREEN);
-                else pathColorZipalign.setStyle("-fx-background-color: " + COLOR_RED);
+                if (isGreen) pathColorZipalign.setStyle(C_BACKGROUND_COLOR + COLOR_GREEN);
+                else pathColorZipalign.setStyle(C_BACKGROUND_COLOR + COLOR_RED);
                 break;
             case KEY_GRADLEW:
-                if (isGreen) pathColorGradlew.setStyle("-fx-background-color: " + COLOR_GREEN);
-                else pathColorGradlew.setStyle("-fx-background-color: " + COLOR_RED);
+                if (isGreen) pathColorGradlew.setStyle(C_BACKGROUND_COLOR + COLOR_GREEN);
+                else pathColorGradlew.setStyle(C_BACKGROUND_COLOR + COLOR_RED);
                 break;
             case KEY_APKSIGNER:
-                if (isGreen) pathColorApksigner.setStyle("-fx-background-color: " + COLOR_GREEN);
-                else pathColorApksigner.setStyle("-fx-background-color: " + COLOR_RED);
+                if (isGreen) pathColorApksigner.setStyle(C_BACKGROUND_COLOR + COLOR_GREEN);
+                else pathColorApksigner.setStyle(C_BACKGROUND_COLOR + COLOR_RED);
                 break;
         }
     }
 
     public void onKeytoolChooserClick(ActionEvent actionEvent) {
         String path = showFileChooser(actionEvent);
-        if (!path.isEmpty()){
+        if (!path.isEmpty()) {
+//            paths.setKeytool(path);
+            savePaths(path);
+        }
+    }
+
+    private void savePaths(String path) {
+        if (path.contains(KEY_KEYTOOL)) {
             paths.setKeytool(path);
+            FileController.save(paths, "paths.fox");
+            checkPaths();
         }
     }
 
     public void onGradlewChooserClick(ActionEvent actionEvent) {
         String path = showFileChooser(actionEvent);
-        if (!path.isEmpty()){
-            paths.setGradlew(path);
+        if (!path.isEmpty()) {
+            savePaths(path);
         }
     }
 
     public void onApkSignerChooserClick(ActionEvent actionEvent) {
         String path = showFileChooser(actionEvent);
-        if (!path.isEmpty()){
-            paths.setApksigner(path);
+        if (!path.isEmpty()) {
+            savePaths(path);
         }
     }
 
     public void onZipailignChooserClick(ActionEvent actionEvent) {
         String path = showFileChooser(actionEvent);
-        if (!path.isEmpty()){
-
-            Commands.checkPath(path);
-            paths.setZipalign(path);
+        if (!path.isEmpty()) {
+            savePaths(path);
         }
 
     }
@@ -362,10 +346,7 @@ public class Controller implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(((Node) actionEvent.getTarget()).getScene().getWindow());
 
-        if (selectedFile != null) {
-            return selectedFile.getAbsolutePath();
-        }
-
-        return "";
+        if (selectedFile == null) return "";
+        else return selectedFile.getAbsolutePath();
     }
 }
