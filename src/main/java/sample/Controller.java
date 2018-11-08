@@ -32,12 +32,6 @@ public class Controller implements Initializable {
     public ListView<String> aboutList;
     public PasswordField masterPass;
     public TextField newAliasNameTV;
-    public Button btn1;
-    public Button btn2;
-    public Button btn3;
-    public Button btn4;
-    public Button btn5;
-    public Button btn6;
     public Pane pathColorKeytool;
     public Pane pathColorGradlew;
     public Pane pathColorZipalign;
@@ -52,14 +46,6 @@ public class Controller implements Initializable {
         loadKeyStores();
         initListKeyStore();
         checkPaths();
-    }
-
-    public void genKeyTest(ActionEvent actionEvent) {
-        Commands.addKeyStoreOrAlias("123456", "simpleName", "key0", "Max Boyar", "Moscow", "RU");
-    }
-
-    public void genAliasTest(ActionEvent actionEvent) {
-        Commands.addKeyStoreOrAlias("123456", "simpleName", "key1", "Max Boyar", "Moscow", "RU");
     }
 
     public void addKeyStoreClick(ActionEvent actionEvent) {
@@ -84,14 +70,7 @@ public class Controller implements Initializable {
             dialogStage.showAndWait();
 
             if (keyProperty.getKeyStoreName() != null) {
-                Commands.addKeyStoreOrAlias(
-                        keyProperty.getPassword(),
-                        keyProperty.getKeyStoreName(),
-                        keyProperty.getAliasName(),
-                        keyProperty.getFirstAndLastName(),
-                        keyProperty.getCity(),
-                        keyProperty.getCountryCode()
-                );
+                Commands.addKeyStoreOrAlias(keyProperty);
                 loadKeyStores();
             }
         } catch (IOException e) {
@@ -145,14 +124,7 @@ public class Controller implements Initializable {
             return;
         }
 
-        Commands.addKeyStoreOrAlias(
-                currentAlias.getPassword(),
-                currentAlias.getKeyStoreName().substring(0, currentAlias.getKeyStoreName().length() - 4),
-                aliasName,
-                currentAlias.getFirstAndLastName(),
-                currentAlias.getCity(),
-                currentAlias.getCountryCode()
-        );
+        Commands.addKeyStoreOrAlias(currentAlias);
 
         getAliasList(currentKeyStore);
         aliasList.getSelectionModel().selectFirst();
