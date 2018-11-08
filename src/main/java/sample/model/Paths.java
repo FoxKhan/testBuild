@@ -1,17 +1,21 @@
 package sample.model;
 
-public class Paths {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    private String keytoolPath;
+public class Paths implements Serializable {
+
+    private String keytool;
     private String zipalign;
     private String gradlew;
+    private String apksigner;
 
-    public String getKeytoolPath() {
-        return keytoolPath;
+    public String getKeytool() {
+        return keytool;
     }
 
-    public void setKeytoolPath(String keytoolPath) {
-        this.keytoolPath = keytoolPath;
+    public void setKeytool(String keytool) {
+        this.keytool = keytool;
     }
 
     public String getZipalign() {
@@ -38,5 +42,14 @@ public class Paths {
         this.apksigner = apksigner;
     }
 
-    private String apksigner;
+    public ArrayList<String> getPathList(){
+
+        ArrayList<String> pathList = new ArrayList<>();
+        pathList.add(getKeytool());
+        pathList.add(getZipalign());
+        pathList.add(getGradlew());
+        pathList.add(getApksigner());
+
+        return pathList;
+    }
 }

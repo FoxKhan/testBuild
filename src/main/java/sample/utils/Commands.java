@@ -1,5 +1,7 @@
 package sample.utils;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import sample.exceptions.NotValidPasswordException;
@@ -10,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import static sample.ProConstants.PATH_TO_PRO;
 import static sample.ProConstants.STORE_FOLDER;
@@ -175,18 +179,16 @@ public class Commands {
         });
     }
 
-    public static Single<Boolean[]> checkPaths(Paths paths) {
-
-        return null;
-    }
-
     public static Single<Boolean> checkPath(String path) {
+
+        String notFound = "CommandNotFoundException";
+
         return cmd(path)
                 .map(s -> {
                     String[] lines = s.split("\n");
                     boolean b = true;
                     for (String line : lines) {
-                        if (line.contains("ObjectNotFound")) {
+                        if (line.contains(notFound)) {
                             b = false;
                             break;
                         }

@@ -124,10 +124,10 @@
                      <Label alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="12.0" prefHeight="17.0" prefWidth="173.0" text="apksigner" textAlignment="CENTER" GridPane.rowIndex="3" />
                      <Label alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="12.0" prefHeight="17.0" prefWidth="173.0" text="zipalign" textAlignment="CENTER" GridPane.rowIndex="2" />
                      <Label alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="26.0" prefHeight="17.0" prefWidth="174.0" text="gradlew" textAlignment="CENTER" GridPane.rowIndex="1" />
-                     <Pane layoutX="132.0" layoutY="10.0" prefHeight="16.0" prefWidth="92.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" />
-                     <Pane layoutX="132.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                     <Pane fx:id="pathColorKeytool" layoutX="132.0" layoutY="10.0" prefHeight="16.0" prefWidth="92.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" />
+                     <Pane fx:id="pathColorGradlew" layoutX="132.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     <Pane fx:id="pathColorZipalign" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                     <Pane fx:id="pathColorApksigner" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #742222;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                      <Button mnemonicParsing="false" onAction="#onKeytoolChooserClick" prefHeight="25.0" prefWidth="114.0" text="choose folder" GridPane.columnIndex="1" />
                      <Button layoutX="91.0" layoutY="8.0" mnemonicParsing="false" onAction="#onGradlewChooserClick" prefHeight="25.0" prefWidth="114.0" text="choose folder" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      <Button layoutX="91.0" layoutY="30.0" mnemonicParsing="false" onAction="#onApkSignerChooserClick" prefHeight="25.0" prefWidth="114.0" text="choose folder" GridPane.columnIndex="1" GridPane.rowIndex="3" />

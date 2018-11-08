@@ -1,5 +1,6 @@
 package sample;
 
+import io.reactivex.functions.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import sample.exceptions.NotValidPasswordException;
@@ -20,8 +22,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import static sample.ProConstants.KEY_KEYTOOL;
-import static sample.ProConstants.STORE_FOLDER;
+import static sample.ProConstants.*;
 
 public class Controller implements Initializable {
 
@@ -36,6 +37,10 @@ public class Controller implements Initializable {
     public Button btn4;
     public Button btn5;
     public Button btn6;
+    public Pane pathColorKeytool;
+    public Pane pathColorGradlew;
+    public Pane pathColorZipalign;
+    public Pane pathColorApksigner;
 
     private String currentKeyStore;
     private KeyProperty currentAlias;
@@ -261,8 +266,21 @@ public class Controller implements Initializable {
                 fin = new FileInputStream(file);
                 oin = new ObjectInputStream(fin);
                 paths = (Paths) oin.readObject();
-                Commands.checkPaths(paths)
-                        .doOnSuccess(this::setPathsColors)
+
+                Commands.checkPath(paths.getKeytool())
+                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_KEYTOOL))
+                        .subscribe();
+
+                Commands.checkPath(paths.getZipalign())
+                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_ZIPALIGN))
+                        .subscribe();
+
+                Commands.checkPath(paths.getGradlew())
+                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_GRADLEW))
+                        .subscribe();
+
+                Commands.checkPath(paths.getApksigner())
+                        .doOnSuccess(aBoolean -> setPathColor(aBoolean, KEY_APKSIGNER))
                         .subscribe();
 
             } catch (Exception e) {
@@ -287,14 +305,31 @@ public class Controller implements Initializable {
         }
     }
 
-    private void setPathsColors(Boolean[] booleans) {
-        //todo
+    private void setPathColor(boolean isGreen, String id) {
+        switch (id){
+            case KEY_KEYTOOL:
+                if (isGreen) pathColorKeytool.setStyle("-fx-background-color: " + COLOR_GREEN);
+                else pathColorKeytool.setStyle("-fx-background-color: " + COLOR_RED);
+                break;
+            case KEY_ZIPALIGN:
+                if (isGreen) pathColorZipalign.setStyle("-fx-background-color: " + COLOR_GREEN);
+                else pathColorZipalign.setStyle("-fx-background-color: " + COLOR_RED);
+                break;
+            case KEY_GRADLEW:
+                if (isGreen) pathColorGradlew.setStyle("-fx-background-color: " + COLOR_GREEN);
+                else pathColorGradlew.setStyle("-fx-background-color: " + COLOR_RED);
+                break;
+            case KEY_APKSIGNER:
+                if (isGreen) pathColorApksigner.setStyle("-fx-background-color: " + COLOR_GREEN);
+                else pathColorApksigner.setStyle("-fx-background-color: " + COLOR_RED);
+                break;
+        }
     }
 
     public void onKeytoolChooserClick(ActionEvent actionEvent) {
         String path = showFileChooser(actionEvent);
         if (!path.isEmpty()){
-            paths.setKeytoolPath(path);
+            paths.setKeytool(path);
         }
     }
 
