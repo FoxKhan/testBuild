@@ -2,7 +2,7 @@ package sample.model;
 
 import java.io.File;
 
-public class FolderController {
+public class FileController {
     public static void delete(File file) {
         if (!file.exists())
             return;
