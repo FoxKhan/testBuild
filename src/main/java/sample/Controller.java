@@ -190,6 +190,15 @@ public class Controller implements Initializable {
         alert.showAndWait();
     }
 
+    private void showAlertEmptyAliasName() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText("Not valid alias name");
+        alert.setContentText("Pls enter valid alias name");
+
+        alert.showAndWait();
+    }
+
     private void loadKeyStores() {
 
         File keyStoresFolder = new File(STORE_FOLDER);
@@ -204,15 +213,6 @@ public class Controller implements Initializable {
                 storeList.getItems().add(keyStore.getName());
             }
         }
-    }
-
-    private void showAlertEmptyAliasName() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error alert");
-        alert.setHeaderText("Not valid alias name");
-        alert.setContentText("Pls enter valid alias name");
-
-        alert.showAndWait();
     }
 
     public void onBuildClick(ActionEvent actionEvent) {

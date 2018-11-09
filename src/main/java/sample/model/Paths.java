@@ -41,15 +41,4 @@ public class Paths implements Serializable {
     public void setApksigner(String apksigner) {
         this.apksigner = apksigner;
     }
-
-    public ArrayList<String> getPathList(){
-
-        ArrayList<String> pathList = new ArrayList<>();
-        pathList.add(getKeytool());
-        pathList.add(getZipalign());
-        pathList.add(getGradlew());
-        pathList.add(getApksigner());
-
-        return pathList;
-    }
 }
