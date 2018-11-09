@@ -79,4 +79,9 @@ public class FileController {
             }
         }
     }
+
+    public static boolean isExist(String filePath){
+        File file = new File(filePath);
+        return file.exists();
+    }
 }

@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
+import sample.build.ApkBuilder;
 import sample.exceptions.NotValidPasswordException;
 import sample.model.FileController;
 import sample.model.Paths;
@@ -41,11 +42,15 @@ public class Controller implements Initializable {
     private KeyProperty currentAlias;
     private Paths paths;
 
+    private ApkBuilder apkBuilder = new ApkBuilder();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadKeyStores();
         initListKeyStore();
         checkPaths();
+
+
     }
 
     public void addKeyStoreClick(ActionEvent actionEvent) {
@@ -212,20 +217,7 @@ public class Controller implements Initializable {
 
     public void onBuildClick(ActionEvent actionEvent) {
 
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(((Node) actionEvent.getTarget()).getScene().getWindow());
-
-        if (selectedDirectory != null) {
-            System.out.println(selectedDirectory.getAbsolutePath());
-
-            HashMap<String, String> pathPreferences = new HashMap<>();
-            pathPreferences.put(KEY_KEYTOOL, selectedDirectory.getAbsolutePath());
-
-            String path = pathPreferences.get(KEY_KEYTOOL);
-
-
-            //TODO
-        }
+        apkBuilder.build();
     }
 
     private void checkPaths() {
@@ -235,7 +227,9 @@ public class Controller implements Initializable {
         paths = FileController.open(file);
         if (paths == null) {
             paths = new Paths();
-            paths.setKeytool("C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe");
+            if (FileController.isExist("C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe")){
+                paths.setKeytool("C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe");
+            }else paths.setKeytool("");
             paths.setGradlew("");
             paths.setZipalign("");
             paths.setApksigner("");
