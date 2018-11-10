@@ -6,7 +6,7 @@ import sample.build.gradle.model.VersionModel
 
 class GradleManagerTest{
 
-    private val newPath = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\"
+    private val newPath = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\newPath"
 
     private val pathToGradle = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\build.gradle"
     private val gm = GradleManager(pathToGradle)

@@ -3,10 +3,10 @@ package sample.build.gradle
 import sample.build.gradle.model.ExtModel
 import sample.build.gradle.model.GradleModel
 import sample.build.gradle.model.VersionModel
-import sample.build.gradle.model.VersionModel.Version.*
+import sample.build.gradle.model.VersionModel.Version.VERSION_CODE
+import sample.build.gradle.model.VersionModel.Version.VERSION_NAME
 import sample.common.open
 import java.io.File
-import java.nio.charset.Charset
 
 
 class GradleManager(private val gradleFile: String) {
@@ -21,7 +21,7 @@ class GradleManager(private val gradleFile: String) {
 
     fun save(newProp: GradleModel, newPath: String) {
 
-        val fileName = "${newPath}buildTest.gradle"
+        val fileName = "$newPath\\${gradleFile.split('\\').last()}"
 
         val output = input.toMutableList()
 
