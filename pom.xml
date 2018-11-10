@@ -91,5 +91,20 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.android.tools/common -->
+        <dependency>
+            <groupId>com.android.tools</groupId>
+            <artifactId>common</artifactId>
+            <version>25.2.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.android.tools/sdk-common -->
+        <dependency>
+            <groupId>com.android.tools</groupId>
+            <artifactId>sdk-common</artifactId>
+            <version>25.3.0</version>
+        </dependency>
+
+
     </dependencies>
 </project>
