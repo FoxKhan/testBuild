@@ -1,6 +1,5 @@
 package sample;
 
-import io.reactivex.functions.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import sample.utils.Commands;
 
 import java.io.*;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import static sample.ProConstants.*;
@@ -224,7 +222,7 @@ public class Controller implements Initializable {
 
         File file = new File("paths.fox");
 
-        paths = FileController.open(file);
+        paths = FileController.openSerializable(file);
         if (paths == null) {
             paths = new Paths();
             if (FileController.isExist("C:\\Program Files\\Android\\Android Studio\\jre\\bin\\keytool.exe")){

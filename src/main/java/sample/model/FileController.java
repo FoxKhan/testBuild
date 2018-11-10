@@ -1,6 +1,9 @@
 package sample.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
+import java.util.List;
 
 public class FileController {
     public static void delete(File file) {
@@ -15,7 +18,7 @@ public class FileController {
         }
     }
 
-    public static <T extends Serializable> T open (File file){
+    public static <T extends Serializable> T openSerializable(File file) {
 
         Serializable result;
 
@@ -80,7 +83,7 @@ public class FileController {
         }
     }
 
-    public static boolean isExist(String filePath){
+    public static boolean isExist(String filePath) {
         File file = new File(filePath);
         return file.exists();
     }

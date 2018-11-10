@@ -1,17 +1,14 @@
 package sample.build.common.svg2vectorandroid
 
 import com.android.ide.common.vectordrawable.Svg2Vector
-
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.file.*
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.EnumSet
-
 import java.nio.file.FileVisitResult.CONTINUE
-import java.nio.file.StandardCopyOption.COPY_ATTRIBUTES
-import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.FileVisitResult.SKIP_SUBTREE
+import java.nio.file.attribute.BasicFileAttributes
+import java.util.*
 
 class SvgFilesProcessor(
         sourceSvgDirectory: String,
@@ -26,7 +23,7 @@ class SvgFilesProcessor(
     fun process() {
         try {
             val options = EnumSet.of(FileVisitOption.FOLLOW_LINKS)
-            //check first if source is a directory
+
             if (Files.isDirectory(sourceSvgPath)) {
                 Files.walkFileTree(sourceSvgPath, options, maxValue, Visitor())
             } else {
@@ -40,7 +37,7 @@ class SvgFilesProcessor(
 
     @Throws(IOException::class)
     private fun convertToVector(source: Path, target: Path) {
-        // convert only if it is .svg
+
         if (source.fileName.toString().endsWith(".svg")) {
             val targetFile = getFileWithXMlExtension(target, extension)
             val fos = FileOutputStream(targetFile)
@@ -66,19 +63,18 @@ class SvgFilesProcessor(
 
         override fun preVisitDirectory(dir: Path,
                                        attrs: BasicFileAttributes): FileVisitResult {
-            // Skip folder which is processing SVGs to xml
+
             if (dir == destinationVectorPath) {
-                return FileVisitResult.SKIP_SUBTREE
+                return SKIP_SUBTREE
             }
 
-            val opt = arrayOf<CopyOption>(COPY_ATTRIBUTES, REPLACE_EXISTING)
             val newDirectory = destinationVectorPath.resolve(sourceSvgPath.relativize(dir))
             try {
-                Files.copy(dir, newDirectory, *opt)
+                Files.createDirectory(newDirectory)
             } catch (ex: FileAlreadyExistsException) {
                 println("FileAlreadyExistsException " + ex.toString())
             } catch (x: IOException) {
-                return FileVisitResult.SKIP_SUBTREE
+                return SKIP_SUBTREE
             }
 
             return CONTINUE
@@ -87,14 +83,15 @@ class SvgFilesProcessor(
         @Throws(IOException::class)
         override fun visitFile(file: Path,
                                attrs: BasicFileAttributes): FileVisitResult {
-            convertToVector(file, destinationVectorPath.resolve(sourceSvgPath.relativize(file)))
+            val newDirectory = destinationVectorPath.resolve(sourceSvgPath.relativize(file))
+            convertToVector(file, newDirectory)
             return CONTINUE
         }
 
         @Throws(IOException::class)
         override fun postVisitDirectory(dir: Path?,
                                         exc: IOException?): FileVisitResult {
-            return FileVisitResult.CONTINUE
+            return CONTINUE
         }
 
         @Throws(IOException::class)

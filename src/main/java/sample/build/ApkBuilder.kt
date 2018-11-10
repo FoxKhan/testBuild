@@ -6,8 +6,6 @@ class ApkBuilder {
 
     fun build(){
 
-        val csdsd : XPath
-
 
 
     }

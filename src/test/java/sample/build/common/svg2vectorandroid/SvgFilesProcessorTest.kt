@@ -14,6 +14,6 @@ class SvgFilesProcessorTest{
         val svgFilesProcessor = SvgFilesProcessor(folderPath, "$folderPath/xml")
         svgFilesProcessor.process()
 
-        FileController.delete(File("$folderPath/xml"))
+//        FileController.delete(File("$folderPath/xml"))
     }
 }

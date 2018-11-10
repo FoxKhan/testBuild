@@ -2,6 +2,7 @@ package sample.build
 
 import org.w3c.dom.Document
 import org.w3c.dom.NodeList
+import sample.common.checkFile
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.ArrayList
@@ -24,7 +25,7 @@ class XmlManager(private var pathToXml: String) {
 
 
     init {
-        checkFile()
+        pathToXml.checkFile(XML_EXTENSION)
         val factory = DocumentBuilderFactory.newInstance()
         factory.isNamespaceAware = true
         documentBuilder = factory.newDocumentBuilder()
@@ -36,7 +37,7 @@ class XmlManager(private var pathToXml: String) {
     }
 
     fun setXml(pathToXml: String) {
-        checkFile(pathToXml)
+        pathToXml.checkFile(XML_EXTENSION)
         this.pathToXml = pathToXml
         doc = documentBuilder.parse(pathToXml)
     }
@@ -96,18 +97,7 @@ class XmlManager(private var pathToXml: String) {
         xFormer.transform(DOMSource(doc), StreamResult(pathToXml))
     }
 
-
-    private fun checkFile() {
-        val file = File(pathToXml)
-        if (!file.exists()) throw FileNotFoundException()
-        if (!file.canRead()) throw NoPermissionException()
-        if (file.name.endsWith(".xml")) throw FileNotFoundException("Xml not found. File: ${file.name}")
-    }
-
-    private fun checkFile(pathToXml: String) {
-        val file = File(pathToXml)
-        if (!file.exists()) throw FileNotFoundException()
-        if (!file.canRead()) throw NoPermissionException()
-        if (file.name.endsWith(".xml")) throw FileNotFoundException("Xml not found")
+    companion object {
+        private const val XML_EXTENSION = "xml"
     }
 }
