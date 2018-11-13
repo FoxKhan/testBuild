@@ -73,7 +73,7 @@ public class Controller implements Initializable {
             dialogStage.showAndWait();
 
             if (keyProperty.getKeyStoreName() != null) {
-                Commands.addKeyStoreOrAlias(keyProperty);
+                Commands.addKeyStore(keyProperty);
                 loadKeyStores();
             }
         } catch (IOException e) {
@@ -127,7 +127,7 @@ public class Controller implements Initializable {
             return;
         }
 
-        Commands.addKeyStoreOrAlias(currentAlias);
+        Commands.addKeyStoreOrAlias(currentAlias, aliasName);
 
         getAliasList(currentKeyStore);
         aliasList.getSelectionModel().selectFirst();

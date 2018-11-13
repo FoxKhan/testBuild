@@ -69,7 +69,16 @@ public class Commands {
 
 
     }
-    public static void addKeyStoreOrAlias(KeyProperty keyProperty){
+    public static void addKeyStoreOrAlias(KeyProperty keyProperty, String aliasName){
+        addKeyStoreOrAlias(keyProperty.getPassword(),
+                keyProperty.getKeyStoreName().replace(".jks", ""),
+                aliasName,
+                keyProperty.getFirstAndLastName(),
+                keyProperty.getCity(),
+                keyProperty.getCountryCode());
+    }
+
+    public static void addKeyStore(KeyProperty keyProperty){
         addKeyStoreOrAlias(keyProperty.getPassword(),
                 keyProperty.getKeyStoreName(),
                 keyProperty.getAliasName(),
@@ -78,7 +87,7 @@ public class Commands {
                 keyProperty.getCountryCode());
     }
 
-    public static void addKeyStoreOrAlias(
+    private static void addKeyStoreOrAlias(
             String password,
             String keyStoreName,
             String aliasName,
