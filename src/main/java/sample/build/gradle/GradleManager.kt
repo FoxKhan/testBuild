@@ -1,25 +1,25 @@
 package sample.build.gradle
 
 import sample.build.gradle.model.ExtModel
-import sample.build.gradle.model.GradleModel
 import sample.build.gradle.model.VersionModel
 import sample.build.gradle.model.VersionModel.Version.VERSION_CODE
 import sample.build.gradle.model.VersionModel.Version.VERSION_NAME
+import sample.build.model.FGradleModel
 import sample.common.open
 import java.io.File
 
 
 class GradleManager(private val gradleFile: String) {
 
-    val gradleProp: GradleModel
+    val FGradleProp: FGradleModel
     private val input: List<String> = gradleFile.open(GRADLE_EXTENSION)
 
     init {
 
-        gradleProp = getProp()
+        FGradleProp = getProp()
     }
 
-    fun save(newProp: GradleModel, newPath: String) {
+    fun save(newProp: FGradleModel, newPath: String) {
 
         val fileName = "$newPath\\${gradleFile.split('\\').last()}"
 
@@ -37,7 +37,7 @@ class GradleManager(private val gradleFile: String) {
         }
     }
 
-    private fun getProp(): GradleModel {
+    private fun getProp(): FGradleModel {
 
         val extMap = HashMap<String, ExtModel>()
         val versionMap = HashMap<VersionModel.Version, VersionModel>()
@@ -55,7 +55,7 @@ class GradleManager(private val gradleFile: String) {
                 else -> extParse(s, lineNumber, input, extMap)
             }
         }
-        return GradleModel(extMap, versionMap)
+        return FGradleModel(extMap, versionMap)
     }
 
     private fun extParse(s: String, i: Int, input: List<String>, extMap: HashMap<String, ExtModel>) {

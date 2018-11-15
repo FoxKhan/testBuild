@@ -1,5 +1,6 @@
 /.idea
 /out
 /keyStores
+module_testbuild.xml
 *.fox
 *.iml

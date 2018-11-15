@@ -8,17 +8,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sample.build.ApkBuilder;
 import sample.exceptions.NotValidPasswordException;
-import sample.model.FileController;
 import sample.model.Paths;
 import sample.model.pojo.KeyProperty;
 import sample.utils.Commands;
+import sample.utils.FileController;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -215,8 +220,43 @@ public class Controller implements Initializable {
 
     public void onBuildClick(ActionEvent actionEvent) {
 
-        apkBuilder.build();
+//        apkBuilder.buildKey();
+
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(new File("src/main/resources/create_build.fxml").toURI().toURL());
+            AnchorPane page = loader.load();
+
+            Stage buildStage = new Stage();
+            buildStage.setTitle("Edit Builder");
+            buildStage.initModality(Modality.WINDOW_MODAL);
+            buildStage.initOwner(((Node) actionEvent.getTarget()).getScene().getWindow());
+            buildStage.initStyle(StageStyle.UTILITY);
+            Scene scene = new Scene(page);
+            buildStage.setScene(scene);
+
+
+            CreateBuildController controller =  loader.getController();
+            controller.init();
+//            KeyProperty keyProperty = new KeyProperty();
+//            FieldController controller = loader.getController();
+//            controller.setKeyProperty(keyProperty);
+
+            buildStage.showAndWait();
+
+//            if (keyProperty.getKeyStoreName() != null) {
+//                Commands.addKeyStore(keyProperty);
+//                loadKeyStores();
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
+
+
 
     private void checkPaths() {
 

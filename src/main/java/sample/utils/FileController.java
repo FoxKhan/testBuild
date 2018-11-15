@@ -1,9 +1,8 @@
-package sample.model;
+package sample.utils;
 
-import org.jetbrains.annotations.Nullable;
+import sample.model.Paths;
 
 import java.io.*;
-import java.util.List;
 
 public class FileController {
     public static void delete(File file) {
@@ -31,21 +30,21 @@ public class FileController {
             result = (Serializable) oin.readObject();
 
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         } finally {
             if (fin != null) {
                 try {
                     fin.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
             if (oin != null) {
                 try {
                     oin.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
             }
         }
@@ -64,7 +63,7 @@ public class FileController {
             oos.writeObject(paths);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //
         } finally {
             if (fout != null) {
                 try {

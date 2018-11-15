@@ -1,6 +1,7 @@
 package sample.build
 
 import org.junit.Test
+import sample.build.xml.XmlManager
 
 class XmlManagerTest {
 
@@ -17,16 +18,6 @@ class XmlManagerTest {
         }
         xml.setValue("colorPrimary", "#000000000")
         xml.saveXml()
-    }
-
-    @Test
-    fun getListValue() {
-
-        val list = xml.getListValue()
-
-        list.forEach {
-            println(it)
-        }
     }
 
     @Test

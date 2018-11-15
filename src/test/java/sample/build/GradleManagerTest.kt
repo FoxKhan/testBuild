@@ -8,13 +8,13 @@ class GradleManagerTest{
 
     private val newPath = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\newPath"
 
-    private val pathToGradle = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\build.gradle"
+    private val pathToGradle = "C:\\Users\\nika-\\Desktop\\test\\gradleTest\\buildKey.gradle"
     private val gm = GradleManager(pathToGradle)
 
     @Test
     fun readGradleFile(){
 
-        val gradleModel = gm.gradleProp
+        val gradleModel = gm.FGradleProp
 
         val newGradle = gradleModel.copy()
         newGradle.version[VersionModel.Version.VERSION_NAME]!!.value = "\"1.999\""
@@ -30,7 +30,7 @@ class GradleManagerTest{
     @Test
     fun saveGradleFile(){
 
-        val gradleModel = gm.gradleProp
+        val gradleModel = gm.FGradleProp
 
         val newGradle = gradleModel.copy()
         newGradle.version[VersionModel.Version.VERSION_NAME]!!.value = "\"1.999\""

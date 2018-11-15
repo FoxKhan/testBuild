@@ -54,9 +54,15 @@ private fun String.openFile(): List<String> {
     return sb.toString().split('\n')
 }
 
-fun String.checkFile(extension : String) {
+//fun checkFile(path: String, extension : String) {
+//    path.checkFile()
+//}
+
+fun String.checkFile(extension : String) : File {
     val file = File(this)
     if (!file.exists()) throw FileNotFoundException()
     if (!file.canRead()) throw NoPermissionException()
     if (!file.name.endsWith(".$extension")) throw FileNotFoundException("$extension not found")
+
+    return file
 }

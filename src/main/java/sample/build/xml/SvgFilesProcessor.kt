@@ -1,4 +1,4 @@
-package sample.build.common.svg2vectorandroid
+package sample.build.xml
 
 import com.android.ide.common.vectordrawable.Svg2Vector
 import java.io.File

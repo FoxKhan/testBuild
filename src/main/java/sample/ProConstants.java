@@ -16,6 +16,6 @@ public class ProConstants {
     public static final String KEY_GRADLEW = "gradlew";
     public static final String KEY_APKSIGNER = "apksigner";
 
-    public final static String ZIPA = "zipalign -v -p 4 c:/users/artk5/documents/testapplication/app/build/outputs/apk/release/app-release-unsigned.apk c:/app/app-release-unsigned-aligned.apk";
-    public final static String PATH_TO_ZIPA = "C:\\Users\\nika-\\AppData\\Local\\Android\\Sdk\\build-tools\\27.0.3\\";
+    public final static String ZIPA = "zipalign -v -p 4 c:/users/artk5/documents/testapplication/app/buildKey/outputs/apk/release/app-release-unsigned.apk c:/app/app-release-unsigned-aligned.apk";
+    public final static String PATH_TO_ZIPA = "C:\\Users\\nika-\\AppData\\Local\\Android\\Sdk\\buildKey-tools\\27.0.3\\";
 }

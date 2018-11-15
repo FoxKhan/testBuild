@@ -1,12 +1,20 @@
 package sample.build
 
-import javax.xml.xpath.XPath
-
 class ApkBuilder {
 
-    fun build(){
+    fun buildKey(){
 
+    }
 
+    fun buildStore(){
+
+    }
+
+    fun builsAll(){
+
+    }
+
+    fun builsSelected(){
 
     }
 }

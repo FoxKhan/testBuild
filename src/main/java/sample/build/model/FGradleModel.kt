@@ -1,14 +1,14 @@
-package sample.build.gradle.model
+package sample.build.model
 
-import java.io.Serializable
+import sample.build.gradle.model.ExtModel
+import sample.build.gradle.model.VersionModel
 
-data class GradleModel(
+data class FGradleModel(
         val ext: HashMap<String, ExtModel>,
         val version: HashMap<VersionModel.Version, VersionModel>
-) : Serializable {
+): IFRes {
 
-
-    fun copy(): GradleModel {
+    fun copy(): FGradleModel {
 
         val newExt = HashMap<String, ExtModel>()
         ext.forEach {
@@ -20,7 +20,7 @@ data class GradleModel(
             newVersion[it.key] = VersionModel(it.value.line, it.value.value)
         }
 
-        return GradleModel(newExt, newVersion)
+        return FGradleModel(newExt, newVersion)
     }
 
 }
