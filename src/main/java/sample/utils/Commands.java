@@ -1,23 +1,16 @@
 package sample.utils;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 import sample.exceptions.NotValidPasswordException;
-import sample.model.Paths;
 import sample.model.pojo.KeyProperty;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
 
-import static sample.ProConstants.*;
-import static sample.ProConstants.COLOR_RED;
-import static sample.ProConstants.C_BACKGROUND_COLOR;
+import static sample.ProConstants.PATH_TO_PRO;
+import static sample.ProConstants.STORE_FOLDER;
 
 public class Commands {
 

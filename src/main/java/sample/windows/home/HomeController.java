@@ -1,4 +1,4 @@
-package sample;
+package sample.windows.home;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 
 import static sample.ProConstants.*;
 
-public class Controller implements Initializable {
+public class HomeController implements Initializable {
 
     public ListView<String> storeList;
     public ListView<String> aliasList;
@@ -237,8 +237,8 @@ public class Controller implements Initializable {
             buildStage.setScene(scene);
 
 
-            CreateBuildController controller =  loader.getController();
-            controller.init();
+//            CreatePatternBuildController controller =  loader.getController();
+//            controller.init();
 //            KeyProperty keyProperty = new KeyProperty();
 //            FieldController controller = loader.getController();
 //            controller.setKeyProperty(keyProperty);

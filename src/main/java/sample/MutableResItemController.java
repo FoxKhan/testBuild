@@ -2,7 +2,7 @@ package sample;
 
 import javafx.scene.control.TextField;
 
-public class ResItemController {
+public class MutableResItemController {
 
     public TextField txtBefore;
     public TextField txtAfter;

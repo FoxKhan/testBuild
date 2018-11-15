@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(new File("src/main/resources/ttt.fxml").toURI().toURL());
+        Parent root = FXMLLoader.load(new File("src/main/resources/home_window.fxml").toURI().toURL());
         primaryStage.setTitle("Feed builder");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

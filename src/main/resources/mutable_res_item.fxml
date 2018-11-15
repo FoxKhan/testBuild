@@ -2,7 +2,8 @@
 
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="30.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.windows.createpattern.ResItemController">
+<HBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="30.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.MutableResItemController">
     <TextField fx:id="txtPropName" prefHeight="30.0" prefWidth="200.0" promptText="prop name" />
     <TextField fx:id="txtBefore" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" promptText="before" />
+    <TextField fx:id="txtAfter" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" promptText="after" />
 </HBox>

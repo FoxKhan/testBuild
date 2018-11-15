@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="700.0" maxWidth="1000.0" minHeight="700.0" minWidth="1000.0"
       prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-      fx:controller="sample.Controller">
+      fx:controller="sample.windows.home.HomeController">
     <HBox prefHeight="16.0" prefWidth="973.0">
         <MenuBar prefHeight="25.0" prefWidth="556.0">
             <Menu mnemonicParsing="false" text="File">

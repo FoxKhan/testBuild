@@ -1,9 +1,7 @@
 package sample.build
 
 import com.android.ide.common.xml.AndroidManifestParser
-import com.android.io.IAbstractFile
 import java.io.FileInputStream
-import java.io.InputStream
 
 class ManifestManager {
 

@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="800.0" maxWidth="1000.0" minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.CreateBuildController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" maxHeight="800.0" maxWidth="1000.0" minHeight="800.0" minWidth="1000.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="sample.windows.createpattern.CreatePatternBuildController">
     <Button mnemonicParsing="false" onAction="#onChooseProBtnClick" text="choose project folder" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Label fx:id="labelProName" layoutX="140.0" prefHeight="25.0" prefWidth="160.0" text="choice project" AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="0.0" />
     <SplitPane dividerPositions="0.29797979797979796" layoutY="82.0" prefHeight="718.0" prefWidth="541.0">

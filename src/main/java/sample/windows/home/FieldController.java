@@ -1,4 +1,4 @@
-package sample;
+package sample.windows.home;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
