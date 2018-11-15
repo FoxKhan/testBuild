@@ -1,11 +1,16 @@
 package sample.windows.createpattern;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import sample.build.gradle.GradleManager;
+import sample.build.model.FGradleModel;
 import sample.build.model.ResModel;
+import sample.build.xml.XmlManager;
 import sample.common.FileUtilsKt;
 
 import java.io.File;
@@ -17,29 +22,94 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class CreatePatternBuildController implements Initializable {
     private final String XML_RES = "xml res";
     private final String XML_VECTOR = "xml vector";
     private final String PNG = "png";
-    private final String MANIFEST = "manifest";
     private final String XML_VECTOR_FOLDER = "xml vector folder";
-    private final String[] choiceArray = {XML_RES, XML_VECTOR, PNG, MANIFEST, XML_VECTOR_FOLDER};
+    private final String GRADLE = "gradle file";
+
+
+    private final String[] choiceArray = {XML_RES, XML_VECTOR, PNG, XML_VECTOR_FOLDER, GRADLE};
+
+
     public Label labelProName;
     public ListView<ResModel> listProRes;
     public ChoiceBox<String> vChoiceRes;
     public AnchorPane root;
     public TreeView<String> treeView;
+    public ListView<String> resItemsList;
     private String pathToPro;
     private TreeItem<String> currentTreeItem;
     private ArrayList<ResModel> resources = new ArrayList<>();
     private ResModel currentProRes;
 
+    private ObservableList<String> resInners = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listProRes.getSelectionModel().selectedItemProperty().addListener(((observableValue, s, t1) -> currentProRes = t1));
+
+        initListProRes();
         vChoiceRes.getItems().addAll(choiceArray);
+        resItemsList.setItems(resInners);
+
+    }
+
+    private void initListProRes() {
+        listProRes.getSelectionModel().selectedItemProperty().addListener(((observableValue, s, t1) -> {
+
+            currentProRes = t1;
+            String fullPath = (pathToPro + currentProRes.getPath());
+
+            switch (currentProRes.getType()) {
+                case XML_RES:
+                    XmlManager xmlManager = new XmlManager(pathToPro + currentProRes.getPath());
+                    HashMap<String, String> list = xmlManager.getMapListValue();
+
+                    resInners.clear();
+                    list.forEach((o, o2) -> resInners.add(o + "    " + o2));
+
+                    break;
+                case XML_VECTOR:
+
+                    resInners.clear();
+                    resInners.add(currentProRes.getPath());
+
+                    break;
+                case PNG:
+                    resInners.clear();
+                    resInners.add(currentProRes.getPath());
+
+                    break;
+                case GRADLE:
+                    resInners.clear();
+                    GradleManager gradleManager = new GradleManager(fullPath);
+                    FGradleModel gradleModel = gradleManager.getFGradleProp();
+
+                    gradleModel.getExt().forEach((s1, extModel) ->
+                            resInners.add(s1 + "    " + extModel.getValue()));
+                    gradleModel.getVersion().forEach((version, versionModel) ->
+                            resInners.add(version.get() + "    " + versionModel.getValue()));
+
+                    break;
+                case XML_VECTOR_FOLDER:
+
+                    resInners.clear();
+
+                    try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(fullPath))) {
+                        for (Path path : directoryStream) {
+                            String name = path.getFileName().toString();
+                            resInners.add(name);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }));
     }
 
     public void onChooseProBtnClick() {
@@ -154,9 +224,9 @@ public class CreatePatternBuildController implements Initializable {
                 addResInResList(res);
 
                 break;
-            case MANIFEST:
+            case GRADLE:
                 if (file.isDirectory()) break;
-                FileUtilsKt.checkFile(fullPath, "xml");
+                FileUtilsKt.checkFile(fullPath, "gradle");
                 addResInResList(res);
 
                 break;

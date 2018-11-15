@@ -225,7 +225,7 @@ public class HomeController implements Initializable {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(new File("src/main/resources/create_build.fxml").toURI().toURL());
+            loader.setLocation(new File("src/main/resources/create_pattern_build.fxml").toURI().toURL());
             AnchorPane page = loader.load();
 
             Stage buildStage = new Stage();
